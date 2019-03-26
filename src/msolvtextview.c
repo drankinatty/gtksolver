@@ -114,6 +114,10 @@ void btnclear_activate (GtkWidget *widget, gpointer data)
 
     gtk_text_buffer_set_text (buffer, "", -1);
 
+    /* set buffer modified false, set [Solve...] sensitivity */
+    gtk_text_buffer_set_modified (buffer, FALSE);
+    gtk_widget_set_sensitive (inst->btnsolv, FALSE);
+
     if (widget || data) {}
 }
 
@@ -206,10 +210,13 @@ void btnhelp_activate (GtkWidget *widget, gpointer data)
 void on_buffer_changed (GtkTextBuffer *buffer, gpointer data)
 {
     app_t *inst = data;
-    gboolean modified = gtk_text_buffer_get_modified (buffer);
+    // gboolean modified = gtk_text_buffer_get_modified (buffer);
 
     /* set [Solve...] button sensitivity */
-    gtk_widget_set_sensitive (inst->btnsolv, modified);
+    // gtk_widget_set_sensitive (inst->btnsolv, modified);
+    gtk_widget_set_sensitive (inst->btnsolv, TRUE);
+
+    if (buffer) {}
 }
 
 static void activate (app_t *inst)
