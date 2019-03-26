@@ -4,6 +4,15 @@
 #define PACKAGE "gtksolver"
 #define VERSION "0.0.1"
 
+/* size_t format specifier for older MinGW compiler versions */
+#if defined (_WIN32)
+#define SZTFMT "u"
+#elif defined (_WIN64)
+#define SZTFMT "lu"
+#else
+#define SZTFMT "zu"
+#endif
+
 typedef struct app {
     GtkWidget   *text_view,     /* text view */
                 *btnsolv;       /* solve button */
@@ -65,7 +74,8 @@ void btnsolv_activate (GtkWidget *widget, gpointer data)
         gtk_text_buffer_insert (buffer, &end, "\n\nSolution Vector:\n\n", -1);
         for (i = 0; i < m->rows; i++) { /* output formatted solution vector */
             gchar *x;
-            x = g_strdup_printf (" x[%3zu] : % 11.7f\n", i, m->mtrx[i][m->rows]);
+            x = g_strdup_printf (" x[%3" SZTFMT "] : % 11.7f\n",
+                                    i, m->mtrx[i][m->rows]);
             gtk_text_buffer_get_end_iter (buffer, &end);
             gtk_text_buffer_insert (buffer, &end, x, -1);
             g_free(x);
