@@ -9,6 +9,8 @@ The linear system solver uses Gauss-Jordan Elimination with full pivoting to sol
 
 The interface is straight forward. The program lauches with a short help message and example of the input format expected in the textview itself. Simply paste your coefficent matrix with the constant vector as the final column replacing the help message and click `[Solve...]`. Or if you need to middle-mouse paste from your select-buffer, the `[Clear]` button allows you to clear the textview and without disturbing the contents of your select buffer.
 
+(note: `[Solve...]` will be grayed (inactive) until you make changes to the buffer, and will return to inactive state after each solution until the buffer is change for the next solver run)
+
 The contents of the textview (i.e. the GtkTextBuffer) is read and passed to the solver. The input format is flexible, but must be an `[N x N+1]` matrix (representing `N` equations and `N` unknowns **PLUS** the constant vector as the last column). Delimiters between the values are ignored. All values are processed as type `double`. (as defined in `mtrx_t.h`)
 
 The contents of the textview before pressing `[Solve...]` is flexible and could equally be:

@@ -98,6 +98,9 @@ void btnsolv_activate (GtkWidget *widget, gpointer data)
     /* restore normal text_view behavior */
     gtk_text_buffer_end_user_action (buffer);
 
+    /* set buffer modified false, set [Solve...] sensitivity */
+    gtk_text_buffer_set_modified (buffer, FALSE);
+    gtk_widget_set_sensitive (inst->btnsolv, FALSE);
 
     if(widget) {}
 }
@@ -178,6 +181,9 @@ static void intro (gpointer data)
     gtk_text_buffer_get_iter_at_line_offset (buffer, &iter, 15, 11);
     gtk_text_buffer_get_iter_at_line_offset (buffer, &end, 15, 21);
     gtk_text_buffer_apply_tag (buffer, tagblue, &iter, &end);
+
+    gtk_text_buffer_set_modified (buffer, FALSE);
+    gtk_widget_set_sensitive (inst->btnsolv, FALSE);
 }
 
 /* Help... button callback */
@@ -193,22 +199,34 @@ void btnhelp_activate (GtkWidget *widget, gpointer data)
     if (widget || data) {}
 }
 
+/** on_buffer_changed fires before on_mark_set with all changes.
+ *  (even undo) and fires before gtk_text_buffer_get_modified()
+ *  reflects change.
+ */
+void on_buffer_changed (GtkTextBuffer *buffer, gpointer data)
+{
+    app_t *inst = data;
+    gboolean modified = gtk_text_buffer_get_modified (buffer);
+
+    /* set [Solve...] button sensitivity */
+    gtk_widget_set_sensitive (inst->btnsolv, modified);
+}
+
 static void activate (app_t *inst)
 {
-    /* Declare variables */
-    GtkWidget *window;
-    // GtkWidget *text_view;
-    GtkWidget *scrolled_window;
-    GtkWidget *vbox;
-    GtkWidget *hbox;
-    // GtkWidget *btnsolv, *btnclear, *btnexit;
-    GtkWidget *btnclear, *btnexit, *btnhelp;
-    GtkWidget *toplabel;
+    GtkWidget   *window,
+                *scrolled_window,
+                *vbox,
+                *hbox;
+
+    GtkWidget   *btnclear,
+                *btnexit,
+                *btnhelp;
+
+    GtkWidget   *toplabel;
 
     GtkTextBuffer *buffer;
     PangoFontDescription *font_desc;
-    // GdkColor color;
-    // GtkTextTag *tag/*, *tagg*/;
 
     /* Create a window with a title, and a default size (win, w, h) */
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -274,7 +292,6 @@ static void activate (app_t *inst)
     /* define the buttons and pack into hbox */
     inst->btnsolv = gtk_button_new_with_mnemonic ("_Solve...");
     gtk_widget_set_size_request (inst->btnsolv, 80, 24);
-    // gtk_widget_set_sensitive (btnsolv, app->optregex);
     gtk_box_pack_start (GTK_BOX (hbox), inst->btnsolv, FALSE, FALSE, 0);
 
     btnclear = gtk_button_new_with_mnemonic ("_Clear");
@@ -294,6 +311,10 @@ static void activate (app_t *inst)
     /* connect window close callback */
     g_signal_connect (window, "destroy",
                       G_CALLBACK (gtk_main_quit), NULL);
+
+    /* connect textview callbacks */
+    g_signal_connect (buffer, "changed",
+                      G_CALLBACK (on_buffer_changed), inst);
 
     /* connect button callbacks */
     g_signal_connect (inst->btnsolv, "clicked",
