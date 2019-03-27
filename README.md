@@ -63,7 +63,7 @@ For Linux, all that is needed is `gcc/make/pkg-config` and `Gtk+2`. (note: some 
 
      $ make
 
-For building on Windows, see the notes on obtaining the precompiled Gtk libraries and header files in the [GtkWrite Readme.md](https://github.com/drankinatty/gtkwrite). You will also need MinGW installed.
+For building on Windows, see the notes on obtaining the precompiled Gtk libraries and header files in the Compiling Section of [GtkWrite Readme.md](https://github.com/drankinatty/gtkwrite). (note: you do not need the gtksourceview libraries or headers) You will also need MinGW installed.
 
 Building with **MinGW** on windows:
 
