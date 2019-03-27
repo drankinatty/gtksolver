@@ -1,8 +1,12 @@
 #include <gtk/gtk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include "mtrx_t.h"
 
 #define PACKAGE "gtksolver"
 #define VERSION "0.0.1"
+#define IMGDIR  "img"
+#define LOGO    "gtksolver.png"
+#define ICON    "gtksolver.ico"
 
 /* size_t format specifier for older MinGW compiler versions */
 #if defined (_WIN32)
@@ -219,6 +223,24 @@ void on_buffer_changed (GtkTextBuffer *buffer, gpointer data)
     if (buffer) {}
 }
 
+/** creates a new pixbuf from filename.
+ *  you are responsible for calling g_object_unref() on
+ *  the pixbuf when done.
+ */
+GdkPixbuf *create_pixbuf_from_file (const gchar *filename)
+{
+    GdkPixbuf *pixbuf;
+    GError *error = NULL;
+    pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+
+    if (!pixbuf) {
+        g_warning (error->message); /* log to terminal window */
+        g_error_free (error);
+    }
+
+    return pixbuf;
+}
+
 static void activate (app_t *inst)
 {
     GtkWidget   *window,
@@ -232,6 +254,7 @@ static void activate (app_t *inst)
 
     GtkWidget   *toplabel;
 
+    gchar *iconfile;
     GtkTextBuffer *buffer;
     PangoFontDescription *font_desc;
 
@@ -239,6 +262,16 @@ static void activate (app_t *inst)
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (window), "Linear System Solver");
     gtk_window_set_default_size (GTK_WINDOW (window), 650, 550);
+
+    /* create icon filename and set icon */
+    if ((iconfile = g_strdup_printf ("%s/%s", IMGDIR, ICON))) {
+        GdkPixbuf *pixbuf = create_pixbuf_from_file (iconfile);
+        if (pixbuf) {
+            gtk_window_set_icon(GTK_WINDOW(window), pixbuf);
+            g_object_unref (pixbuf);
+        }
+        g_free (iconfile);
+    }
 
     /* create vbox and add as main container in window */
     vbox = gtk_vbox_new (FALSE, 0);
@@ -252,10 +285,9 @@ static void activate (app_t *inst)
     gtk_box_pack_start (GTK_BOX (vbox), toplabel, FALSE, FALSE, 0);
     gtk_widget_show (toplabel);
 
-    /* Create the scrolled window. Usually NULL is passed for both parameters so
-     * that it creates the horizontal/vertical adjustments automatically. Setting
-     * the scrollbar policy to automatic allows the scrollbars to only show up
-     * when needed.
+    /* Create the scrolled window. NULL is passed for both parameters to
+     * size horizontal/vertical adjustments automatically. Setting the
+     * scrollbar policy to automatic show scrollbars  when needed.
      */
     scrolled_window = gtk_scrolled_window_new (NULL, NULL);
     gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
@@ -305,14 +337,12 @@ static void activate (app_t *inst)
     gtk_widget_set_size_request (btnclear, 80, 24);
     gtk_box_pack_start (GTK_BOX (hbox), btnclear, FALSE, FALSE, 0);
 
-    btnhelp = gtk_button_new_with_mnemonic ("_Help");
-    gtk_widget_set_size_request (btnhelp, 80, 24);
-    // gtk_box_pack_end (GTK_BOX (hbox), btnhelp, FALSE, FALSE, 0);
-
     btnexit = gtk_button_new_with_mnemonic ("_Exit");
     gtk_widget_set_size_request (btnexit, 80, 24);
     gtk_box_pack_end (GTK_BOX (hbox), btnexit, FALSE, FALSE, 0);
-    /* push help after exit */
+
+    btnhelp = gtk_button_new_with_mnemonic ("_Help");
+    gtk_widget_set_size_request (btnhelp, 80, 24);
     gtk_box_pack_end (GTK_BOX (hbox), btnhelp, FALSE, FALSE, 0);
 
     /* connect window close callback */
