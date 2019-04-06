@@ -82,6 +82,8 @@ TDM-MinGW is often installed as part of the Code::Blocks IDE. The only addition 
 
 As mentioned at the beginning, this project is basically a quick GtkTextView wrapper around a linear system solver. The Gtk+2 interface and forwarding of the textview contents to the solver has minimal validations. This basically grew out of finding a convenient way to help students with physics and engineering problems. The acceptable input format is flexible enough to allow pasting of a `.csv` (*comma separated values* file) into the editor window or any other delimited set of numbers that make up the coefficent matrix for a system of equations. The underlying solver and parsing code is much more robust.
 
+In addition to the Gtk+2 interface, there is a native windows version that can be compiled with VS. The Windows SDK 7.1 is all that is needed. If there is interest, that source code can be either included in a separate directory in this project, or as a separate project. Add an issue if you are interested in the native windows version being made available.
+
 ### License/Copyright
 
 This code is licensed under the GPLv2 open-source license contained in `gpl-2.0.txt` and copyright David C. Rankin, 2019.

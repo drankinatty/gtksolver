@@ -261,7 +261,7 @@ static void activate (app_t *inst)
     /* Create a window with a title, and a default size (win, w, h) */
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (window), "Linear System Solver");
-    gtk_window_set_default_size (GTK_WINDOW (window), 650, 550);
+    gtk_window_set_default_size (GTK_WINDOW (window), 640, 450);
 
     /* create icon filename and set icon */
     if ((iconfile = g_strdup_printf ("%s/%s", IMGDIR, ICON))) {
