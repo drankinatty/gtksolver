@@ -3,7 +3,7 @@
 
 GtkSolver is a simple but fast and capable linear system solver that is simply a GtkTextView wrapped around a command-line solver to allow simple copy/paste of the coefficent matrix (including the constant vector as the last column) into the textview editor for solving. Basically it is an editor with a `[Solve...]` button.  A convenience that saves creating the file with the coefficent matrix and constant vector before calling the solver from the command line. The underlying parser and solver is written entirely in C. (the `mtrx_t.[ch]` source files contain code for handling direct file input as well)
 
-The linear system solver uses Gauss-Jordan Elimination with full pivoting to solve a system of equations containing any number of unknowns up to the physical memory limits of your computer. See [Gaussian Elimination](https://en.wikipedia.org/wiki/Gaussian_elimination)
+The linear system solver uses Gauss-Jordan Elimination with full pivoting to solve a system of equations containing any number of unknowns up to the physical memory limits of your computer. See [Gaussian Elimination](https://en.wikipedia.org/wiki/Gaussian_elimination) Though the buffer for each line of the coefficent matrix parsed from the textview is limited to 8192 characters. If your needs are greater, just change the `MAXC` define at the top of `mtrx_t.h`.
 
 ### Solver Use
 
