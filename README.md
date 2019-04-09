@@ -59,7 +59,7 @@ Taking the contents of the second example above as the contents of the textview 
 
 ### Interface Command Line Options
 
-The button bar on the bottom has been removed from the default interface and replace with a standard menu and toolbar. If you liked the old button bar you can enable it simply by passing the `'-b'` option on the command line to turn the bottom button bar on. If you don't like the new toolbar, you can turn the toolbar off by passing the `'-t'` option on the command line. The static label across the top basically duplicating the titlebar text.
+The button bar on the bottom has been removed from the default interface and replaced with a standard menu and toolbar. If you liked the old button bar you can enable it simply by passing the `'-b'` option on the command line to turn the bottom button bar on. If you don't like the new toolbar, you can turn the toolbar off by passing the `'-t'` option on the command line. The static label across the top basically duplicating the titlebar text has been removed.
 
 ### Compiling
 
