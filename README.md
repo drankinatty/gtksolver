@@ -57,6 +57,10 @@ Taking the contents of the second example above as the contents of the textview 
 
 (where the formatted solution vector is simply written back to the same GtkTextBuffer and displayed in the textview below the coefficent matrix)
 
+### Interface Command Line Options
+
+The button bar on the bottom has been removed from the default interface and replace with a standard menu and toolbar. If you liked the old button bar you can enable it simply by passing the `'-b'` option on the command line to turn the bottom button bar on. If you don't like the new toolbar, you can turn the toolbar off by passing the `'-t'` option on the command line. The static label across the top basically duplicating the titlebar text.
+
 ### Compiling
 
 For Linux, all that is needed is `gcc/make/pkg-config` and `Gtk+2`. (note: some distributions package the headers and development files in separate packages, for instance `Gtk+2-dev`). You may want to create an out-of-source directory for building to prevent cluttering your sources with the object and executable files. Simply create a separate directory (e.g. `gtksolver.build`) and then symlink the `Makefile`, `src` and `include` directories within your build directory. All that is needed then is to change to the build directory and type:
@@ -77,6 +81,10 @@ Building with **TDM-MinGW** on windows.
 TDM-MinGW is often installed as part of the Code::Blocks IDE. The only addition for using TDM-MinGW is to pass the `CC=mingw32-gcc` make-variable on the command line and invoke make with `mingw32-make` to accommodate naming difference in TDM-MinGW, e.g.
 
     $ mingw32-make CC=mingw32-gcc os=windows
+
+### Installation
+
+There is nothing required for the solver to run other than invoking the executable. The solver and interface is fully funciton without more. However, for it to find and display the GtkSolver icon, currently the `img/` directory must be installed below the current working path for the executable. The `LICENSE` file should be in the working directory. Eventually there will be additions to determine the system and user paths and to set a standard install location for the image and license files when gtksolver is packaged for the various distributions.
 
 ### Development Status
 
