@@ -65,9 +65,9 @@ void btnsolv_activate (GtkWidget *widget, gpointer data)
     app_t *inst = data;
     gint line;
     size_t i;
-    gchar *buf, c;
+    gchar *buf, c, last = 0, prevlast = 0;
     gboolean havevalue = FALSE;
-    GtkTextIter start, end;
+    GtkTextIter start, end, lastiter, previter;
     // GtkTextBuffer *buffer = GTK_TEXT_BUFFER(data);
     GtkTextBuffer *buffer;
 
@@ -76,14 +76,28 @@ void btnsolv_activate (GtkWidget *widget, gpointer data)
     /* get start and end iters for buffer */
     gtk_text_buffer_get_start_iter (buffer, &start);
     gtk_text_buffer_get_end_iter (buffer, &end);
+    lastiter = start;
 
-    /* advance start iter to beginning of first value */
+    /* advance start iter to beginning of first value
+     * (updated to handle -0.4 or -.4)
+     */
     do {
         c = gtk_text_iter_get_char (&start);
-        if (c == '.' || c == '-' || c == '+' || isdigit (c)) {
+        if (isdigit (c)) {
+            // if (last == '.' || last == '-' || last == '+')
+            if (last == '.' || last == '-' || last == '+') {
+                if (last == '.' && (prevlast == '-' || prevlast == '+'))
+                    start = previter;
+                else
+                    start = lastiter;
+            }
             havevalue = TRUE;
             break;
         }
+        prevlast = last ? last : c;
+        last = c;
+        previter = lastiter;
+        lastiter = start;
     } while (gtk_text_iter_forward_char (&start) &&
             !gtk_text_iter_equal (&start, &end));
 
