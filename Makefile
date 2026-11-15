@@ -11,7 +11,7 @@ SRCDIR  := src
 # compiler and linker flags
 CFLAGS  := -Wall -Wextra -pedantic -finline-functions -std=c11 -Wshadow
 CFLAGS	+= -I$(INCLUDE)
-CFLAGS	+= `pkg-config --cflags --libs gtk+-2.0`
+CFLAGS	+= `pkg-config --cflags gtk+-2.0`
 ifeq ($(debug),-DDEBUG)
 CFLAGS  += -g
 else
