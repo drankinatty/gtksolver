@@ -12,6 +12,7 @@ SRCDIR  := src
 CFLAGS  := -Wall -Wextra -pedantic -finline-functions -std=c11 -Wshadow
 CFLAGS	+= -I$(INCLUDE)
 CFLAGS	+= `pkg-config --cflags gtk+-2.0`
+CFLAGS	+= -Wno-deprecated-declarations
 ifeq ($(debug),-DDEBUG)
 CFLAGS  += -g
 else
